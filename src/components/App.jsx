@@ -45,20 +45,19 @@ export class App extends Component {
         this.setState({ filter: filterTerm });
     };
 
-    filteredContacts = () =>
-        this.state.contacts.filter(contact => {
-            const findName = contact.name
-                .toLowerCase()
-                .includes(this.state.filter.toLowerCase().trim());
-            const findNumber = contact.number.includes(
-                this.state.filter.trim()
-            );
-
-            if (findName || findNumber) {
-                return true;
-            }
-            return false;
-        });
+    filteredContacts = () => {
+        if (!!this.state.filter) {
+            return this.state.contacts.filter(contact => {
+                return (
+                    contact.name
+                        .toLowerCase()
+                        .includes(this.state.filter.toLowerCase().trim()) ||
+                    contact.number.includes(this.state.filter.trim())
+                );
+            });
+        }
+        return this.state.contacts;
+    };
 
     render() {
         return (
