@@ -34,19 +34,19 @@ export class App extends Component {
     };
 
     onRemoveContact = contactId => {
-        this.setState({
-            contacts: this.state.contacts.filter(
+        this.setState(prevState => ({
+            contacts: prevState.contacts.filter(
                 contact => contact.id !== contactId
             ),
-        });
+        }));
     };
 
     onFilter = filterTerm => {
         this.setState({ filter: filterTerm });
     };
 
-    render() {
-        const filteredContacts = this.state.contacts.filter(contact => {
+    filteredContacts = () =>
+        this.state.contacts.filter(contact => {
             const findName = contact.name
                 .toLowerCase()
                 .includes(this.state.filter.toLowerCase().trim());
@@ -60,6 +60,7 @@ export class App extends Component {
             return false;
         });
 
+    render() {
         return (
             <>
                 <Section>
@@ -77,7 +78,7 @@ export class App extends Component {
                                 onFilterChange={this.onFilter}
                             />
                             <ContactList
-                                contacts={filteredContacts}
+                                contacts={this.filteredContacts()}
                                 onRemoveContact={this.onRemoveContact}
                             />
                         </Container>
